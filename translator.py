@@ -28,4 +28,5 @@ class Translator:
 
 if __name__ == '__main__':
     translator = Translator()
-    translator.run_lexical_interpreter_simple()
+    # translator.run_lexical_interpreter_simple()
+    translator.run_lexical_interpreter_regex()
