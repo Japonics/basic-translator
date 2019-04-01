@@ -3,10 +3,11 @@ import re
 from expressions import EXPRESSIONS
 
 SINGLE_OPERATOR_REGEX = "\+|\-|\*|\/|\(|\)|\-{1}"
+INTEGER_NUMBERS_REGEX = "([\d]+)"
+FLOAT_NUMBERS_REGEX = "(([0-9]{1,})\.([0-9]{1,}))"
+VARIABLES_REGEX = "(([a-zA-Z]{1,})([a-zA-Z0-9]{1,}))|([a-zA-Z]{1,})"
 
-# TODO
-# add regex for variable
-# add regex for number
+GENERAL_REGEX = "((-?(?:\d+(?:\.\d+)?))|(\+|\-|\*|\/|\(|\)|\-{1})|(([a-zA-Z]{1,})([a-zA-Z0-9]{1,}))|([a-zA-Z]{1,})|([-+\/*()])|(-?\d+))"
 
 
 class LexicalInterpreterRegex:
@@ -14,7 +15,7 @@ class LexicalInterpreterRegex:
     def __init__(self, word_to_analyze):
         self.word = word_to_analyze
         self.regex_expressions = [
-            SINGLE_OPERATOR_REGEX
+            GENERAL_REGEX
         ]
         self.tokens = {}
 
@@ -23,8 +24,13 @@ class LexicalInterpreterRegex:
             regex_matcher = re.compile(regex_expression)
             for match_result in regex_matcher.finditer(self.word):
                 self.tokens[match_result.start()] = match_result.group()
-        print(self.tokens)
-        return []
+
+        sorted_tokens = sorted(self.tokens)
+        tokens_result = []
+        for position in sorted_tokens:
+            tokens_result.append(self.tokens[position])
+
+        return tokens_result
 
 
 if __name__ == '__main__':
