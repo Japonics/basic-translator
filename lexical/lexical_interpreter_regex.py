@@ -2,12 +2,13 @@ import re
 
 from expressions import EXPRESSIONS
 
-SINGLE_OPERATOR_REGEX = "\+|\-|\*|\/|\(|\)|\-{1}"
-INTEGER_NUMBERS_REGEX = "([\d]+)"
-FLOAT_NUMBERS_REGEX = "(([0-9]{1,})\.([0-9]{1,}))"
-VARIABLES_REGEX = "(([a-zA-Z]{1,})([a-zA-Z0-9]{1,}))|([a-zA-Z]{1,})"
+INVALID_EXPRESSIONS_REGEX = [
+    "[^a-zA-Z0-9\*\+\-\(\)\/\. ]{1}",
+    "(([a-zA-Z0-9]{1,})\.([a-zA-Z0-9]{1,})\.([a-zA-Z0-9]{1,}))",
+    "([\.]{2,})"
+]
 
-GENERAL_REGEX = "((-?(?:\d+(?:\.\d+)?))|(\+|\-|\*|\/|\(|\)|\-{1})|(([a-zA-Z]{1,})([a-zA-Z0-9]{1,}))|([a-zA-Z]{1,})|([-+\/*()])|(-?\d+))"
+GENERAL_REGEX = "(((?:\d+(?:\.\d+)?))|(\+|\-|\*|\/|\(|\)|\-{1})|(([a-zA-Z]{1,})([a-zA-Z0-9]{1,}))|([a-zA-Z]{1,})|([-+\/*()])|(-?\d+))"
 
 
 class LexicalInterpreterRegex:
@@ -20,6 +21,13 @@ class LexicalInterpreterRegex:
         self.tokens = {}
 
     def analyze(self):
+        for invalid_expression_regex in INVALID_EXPRESSIONS_REGEX:
+            invalid_expression = re.compile(invalid_expression_regex)
+            for invalid_char in invalid_expression.finditer(self.word):
+                print("Invalid expression: {} at {} position".format(self.word, invalid_char.start()))
+                self.word = "".format(str(self.word)[:invalid_char.start()], str(self.word)[invalid_char.end():])
+                print(self.word)
+
         for regex_expression in self.regex_expressions:
             regex_matcher = re.compile(regex_expression)
             for match_result in regex_matcher.finditer(self.word):
@@ -42,5 +50,7 @@ if __name__ == '__main__':
 
         interpreter = LexicalInterpreterRegex(word)
         tokens = interpreter.analyze()
-        for token in tokens:
-            print(token)
+        if tokens is not None:
+            for token in tokens:
+                print(token)
+

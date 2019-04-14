@@ -19,6 +19,8 @@ class Translator:
 
     def run_lexical_interpreter_regex(self):
         for word in self.to_analyze:
+            print("")
+            print("Work: {}".format(word))
             interpreter = LexicalInterpreterRegex(word)
             tokens = interpreter.analyze()
             if tokens is not None:
