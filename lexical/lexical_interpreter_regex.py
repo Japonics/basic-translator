@@ -25,7 +25,7 @@ class LexicalInterpreterRegex:
             invalid_expression = re.compile(invalid_expression_regex)
             for invalid_char in invalid_expression.finditer(self.word):
                 print("Invalid expression: {} at {} position".format(self.word, invalid_char.start()))
-                self.word = "".format(str(self.word)[:invalid_char.start()], str(self.word)[invalid_char.end():])
+                self.word = "{}{}".format(str(self.word)[:invalid_char.start()], str(self.word)[invalid_char.end():])
                 print(self.word)
 
         for regex_expression in self.regex_expressions:
