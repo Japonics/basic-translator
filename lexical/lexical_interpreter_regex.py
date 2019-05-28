@@ -14,7 +14,7 @@ INVALID_EXPRESSIONS_REGEX = [
     "[^a-zA-Z0-9\*\+\-\(\)\/\. ]{1}",
     "(([a-zA-Z0-9]{1,})\.([a-zA-Z0-9]{1,})\.([a-zA-Z0-9]{1,}))",
     "([\.]{2,})",
-    "\+|\-|\*|\/|\-{2}"
+    "(\+|\-|\*|\/|\-){2,}"
 ]
 
 GENERAL_REGEX = "(((?:\d+(?:\.\d+)?))|(\+|\-|\*|\/|\(|\)|\-{1})|(([a-zA-Z]{1,})([a-zA-Z0-9]{1,}))|([a-zA-Z]{1,})|([-+\/*()])|(-?\d+))"
@@ -35,7 +35,6 @@ class LexicalInterpreterRegex:
             for invalid_char in invalid_expression.finditer(self.word):
                 print("Invalid expression: {} at {} position".format(self.word, invalid_char.start()))
                 self.word = "{}{}".format(str(self.word)[:invalid_char.start()], str(self.word)[invalid_char.end():])
-                print(self.word)
 
         for regex_expression in self.regex_expressions:
             regex_matcher = re.compile(regex_expression)
