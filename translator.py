@@ -1,34 +1,33 @@
 from expressions import EXPRESSIONS
-from lexical.lexical_interpreter_simple import LexicalInterpreterSimple
 from lexical.lexical_interpreter_regex import LexicalInterpreterRegex
+from syntactic.syntactic_interpreter import SyntacticInterpreter
 
 
 class Translator:
     def __init__(self):
         self.to_analyze = EXPRESSIONS
 
-    def run_lexical_interpreter_simple(self):
+    def run_interpreter(self):
         for word in self.to_analyze:
-            print("Analyze word: {}".format(word))
-            interpreter = LexicalInterpreterSimple(word)
-            tokens = interpreter.analyze()
-            if tokens is not None:
-                for token in tokens:
-                    print(token)
-            print("")
 
-    def run_lexical_interpreter_regex(self):
-        for word in self.to_analyze:
+            lexer = LexicalInterpreterRegex(word)
+            tokens = lexer.analyze()
+
+            if tokens is None:
+                continue
+
             print("")
-            print("Work: {}".format(word))
-            interpreter = LexicalInterpreterRegex(word)
-            tokens = interpreter.analyze()
-            if tokens is not None:
-                for token in tokens:
-                    print(token)
+            print("")
+            print("")
+            print("PROCESSING WORD")
+            print("WORD: {}".format(word))
+            # print("TOKENS: {}".format(tokens))
+            syntactic = SyntacticInterpreter(tokens)
+            syntactic.start()
 
 
 if __name__ == '__main__':
     translator = Translator()
-    # translator.run_lexical_interpreter_simple()
-    translator.run_lexical_interpreter_regex()
+    print("########## START PROGRAM ##########")
+    translator.run_interpreter()
+    print("########## FINISHED ##########")
