@@ -31,10 +31,14 @@ class LexicalInterpreterRegex:
         self.tokens: Dict[int, TokenWord] = {}
 
     def analyze(self):
+        if self.word == "":
+            print("Invalid expression: {} at {} position".format(self.word, 0))
+            return None
+
         for invalid_expression_regex in INVALID_EXPRESSIONS_REGEX:
             invalid_expression = re.compile(invalid_expression_regex)
             for invalid_char in invalid_expression.finditer(self.word):
-                # print("Invalid expression: {} at {} position".format(self.word, invalid_char.start()))
+                print("Invalid expression: {} at {} position".format(self.word, invalid_char.start()))
                 return None
                 # self.word = "{}{}".format(str(self.word)[:invalid_char.start()], str(self.word)[invalid_char.end():])
 

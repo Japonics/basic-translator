@@ -9,21 +9,22 @@ class Translator:
 
     def run_interpreter(self):
         for word in self.to_analyze:
+            print("")
+            print("")
+            print("")
+            print("##### PROCESSING WORD #####")
+            print("WORD: {}".format(word))
 
             lexer = LexicalInterpreterRegex(word)
             tokens = lexer.analyze()
 
             if tokens is None:
+                print("##### DONE PROCESSING #####")
                 continue
 
-            print("")
-            print("")
-            print("")
-            print("PROCESSING WORD")
-            print("WORD: {}".format(word))
-            # print("TOKENS: {}".format(tokens))
             syntactic = SyntacticInterpreter(tokens)
             syntactic.start()
+            print("##### DONE PROCESSING #####")
 
 
 if __name__ == '__main__':
